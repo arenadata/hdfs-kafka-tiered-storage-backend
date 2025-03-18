@@ -21,15 +21,18 @@ dependencies {
 
     implementation "commons-io:commons-io:$apacheCommonsIOVersion"
     implementation("org.apache.hadoop:hadoop-common:$hadoopVersion") {
+        exclude group: "com.fasterxml.jackson.core"
         exclude group: "org.slf4j"
     }
     implementation("org.apache.hadoop:hadoop-hdfs-client:$hadoopVersion") {
+        exclude group: "com.fasterxml.jackson.core"
         exclude group: "org.slf4j"
     }
 
     testImplementation "junit:junit:$junitVersion"
 
     testImplementation("org.apache.hadoop:hadoop-minicluster:$hadoopVersion") {
+        exclude group: "com.fasterxml.jackson.core"
         exclude group: "org.slf4j"
     }
     testImplementation "io.aiven:tiered-storage-for-apache-kafka-storage-core:$aivenTieredStorageVersion:test-fixtures"
