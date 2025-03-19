@@ -1,0 +1,5 @@
+rootProject.name = 'hdfs-kafka-tiered-storage-backend'
+
+include 'storage-backend'
+include 'e2e'
+

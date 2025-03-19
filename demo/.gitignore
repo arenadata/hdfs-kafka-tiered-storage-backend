@@ -1,0 +1,5 @@
+# Credentials
+.env
+
+# Demo keys
+*.pem

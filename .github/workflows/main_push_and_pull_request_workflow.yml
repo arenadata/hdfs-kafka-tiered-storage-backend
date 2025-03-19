@@ -1,0 +1,53 @@
+# The workflow to check main after push.
+name: Main checks after push and during pull requests
+on:
+  push:
+    branches: [ 'main' ]
+  pull_request:
+    branches: [ 'main' ]
+jobs:
+  build:
+    strategy:
+      matrix:
+        java-version: [ 11, 17 ]
+        hdfs-version: [ '3.2.4', '3.3.6' ]
+    name: Build on ${{ matrix.runs-on }} with jdk ${{ matrix.java-version }} and HDFS ${{ matrix.hdfs-version }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up JDK ${{ matrix.java-version }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ matrix.java-version }}
+          distribution: temurin
+
+      - name: Build with Gradle
+        run: make HDFS_VERSION=${{ matrix.hdfs-version }} build
+
+      - name: Run unit tests
+        run: make HDFS_VERSION=${{ matrix.hdfs-version }} test
+
+      - name: Run integration tests
+        run: make HDFS_VERSION=${{ matrix.hdfs-version }} integration_test
+  e2e_test:
+    strategy:
+      matrix:
+        java-version: [ 11 ]
+        hdfs-version: [ '3.3.6', '3.2.4' ]
+    name: E2E tests for Hdfs with jdk ${{ matrix.java-version }} and HDFS ${{ matrix.hdfs-version }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build Docker image
+        run: make HDFS_VERSION=${{ matrix.hdfs-version }} docker_image
+
+      - name: Run E2E tests
+        timeout-minutes: 30
+        run: make HDFS_VERSION=${{ matrix.hdfs-version }} E2E_TEST=Hdfs e2e_test
