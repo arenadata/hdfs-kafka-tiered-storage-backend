@@ -28,7 +28,7 @@ checkstyle:
 	./gradlew checkstyleMain checkstyleTest checkstyleIntegrationTest
 
 build:
-	./gradlew build distTar -x test -x integrationTest -x e2e:test -PhadoopVersion=$(HDFS_VERSION)
+	./gradlew build shadowJar -x test -x integrationTest -x e2e:test -PhadoopVersion=$(HDFS_VERSION)
 
 test: build
 	./gradlew test -x e2e:test -PhadoopVersion=$(HDFS_VERSION)
