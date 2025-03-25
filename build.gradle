@@ -13,10 +13,33 @@
  */
 
 plugins {
-    id "java-library"
-    id "maven-publish"
-    id "com.diffplug.spotless" version "6.25.0"
-    id "com.gradleup.shadow" version "8.3.5"
+    id 'java-library'
+    id 'maven-publish'
+    id 'com.diffplug.spotless' version '6.25.0'
+    id 'com.gradleup.shadow' version '8.3.5'
+    id 'io.github.rmanibus.maven-settings' version '0.8'
+    id 'me.qoomon.git-versioning' version '6.4.4'
+}
+
+gitVersioning.apply {
+    refs {
+        considerTagsOnBranches = true
+
+        branch('release/.+') {
+            describeTagFirstParent = false
+            version ='${describe.tag.version.major}.${describe.tag.version.minor}.${describe.tag.version.patch.next}-SNAPSHOT'
+        }
+
+        branch('main') {
+            describeTagFirstParent = false
+            updateGradleProperties = true
+            version = '${describe.tag.version.major}.${describe.tag.version.minor.next}.0-SNAPSHOT'
+        }
+
+        tag('v(?<version>.*)') {
+            version = '${ref.version}'
+        }
+    }
 }
 
 allprojects {
@@ -130,13 +153,19 @@ subprojects {
     }
 }
 
+def getPublishingProperty(publishProperty) {
+    return version.endsWith('SNAPSHOT')
+            ? project.findProperty("snapshot${publishProperty}")
+            : project.findProperty("release${publishProperty}")
+}
 
 publishing {
     repositories {
-        maven {
-            name = 'artifactory'
-            url = "${project.properties.artifactoryRepoUrl ?: 'http://artifactory:8080/repository/maven-releases/'}"
-            credentials(PasswordCredentials)
+        afterEvaluate {
+            maven {
+                name = getPublishingProperty('ArtifactoryId')
+                url = getPublishingProperty('ArtifactoryUrl')
+            }
         }
     }
 

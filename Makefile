@@ -11,7 +11,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ##
-VERSION := $(shell grep -o -E '^version=[0-9]+\.[0-9]+\.[0-9]+(-SNAPSHOT)?' gradle.properties | cut -c9-)
+VERSION := $(shell ./gradlew -q --console=plain :version)
 HDFS_VERSION := 3.3.6
 IMAGE_NAME := arenadata/kafka-with-ts-plugin
 IMAGE_VERSION := latest
