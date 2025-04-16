@@ -13,9 +13,33 @@
  */
 
 plugins {
-    id "java-library"
-    id "distribution"
-    id "com.diffplug.spotless" version "6.25.0"
+    id 'java-library'
+    id 'maven-publish'
+    id 'com.diffplug.spotless' version '6.25.0'
+    id 'com.gradleup.shadow' version '8.3.5'
+    id 'io.github.rmanibus.maven-settings' version '0.8'
+    id 'me.qoomon.git-versioning' version '6.4.4'
+}
+
+gitVersioning.apply {
+    refs {
+        considerTagsOnBranches = true
+
+        branch('release/.+') {
+            describeTagFirstParent = false
+            version ='${describe.tag.version.major}.${describe.tag.version.minor}.${describe.tag.version.patch.next}-SNAPSHOT'
+        }
+
+        branch('main') {
+            describeTagFirstParent = false
+            updateGradleProperties = true
+            version = '${describe.tag.version.major}.${describe.tag.version.minor.next}.0-SNAPSHOT'
+        }
+
+        tag('v(?<version>.*)') {
+            version = '${ref.version}'
+        }
+    }
 }
 
 allprojects {
@@ -25,9 +49,6 @@ allprojects {
         }
         mavenCentral()
     }
-
-    // https://docs.gradle.org/current/userguide/distribution_plugin.html
-    apply plugin: "distribution"
 
     ext {
         aivenTieredStorageVersion = "0.0.1-SNAPSHOT"
@@ -52,11 +73,6 @@ allprojects {
 
         testcontainersVersion = "1.20.1"
     }
-
-    tasks.distTar {
-        compression = Compression.GZIP
-        duplicatesStrategy DuplicatesStrategy.EXCLUDE
-    }
 }
 
 subprojects {
@@ -80,6 +96,8 @@ subprojects {
     apply plugin: "idea"
 
     apply plugin: "com.diffplug.spotless"
+
+    apply plugin: "com.gradleup.shadow"
 
     dependencies {
         compileOnly "org.apache.kafka:kafka-clients:$kafkaVersion"
@@ -122,14 +140,9 @@ subprojects {
         options.addStringOption('Xdoclint:all,-missing', '-quiet')
     }
 
-    distributions {
-        main {
-            contents {
-                from jar
-                from sourcesJar
-                from configurations.runtimeClasspath
-            }
-        }
+    shadowJar {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        mergeServiceFiles()
     }
 
     spotless {
@@ -140,17 +153,46 @@ subprojects {
     }
 }
 
+def getPublishingProperty(publishProperty) {
+    return version.endsWith('SNAPSHOT')
+            ? project.findProperty("snapshot${publishProperty}")
+            : project.findProperty("release${publishProperty}")
+}
+
+publishing {
+    repositories {
+        afterEvaluate {
+            maven {
+                name = getPublishingProperty('ArtifactoryId')
+                url = getPublishingProperty('ArtifactoryUrl')
+            }
+        }
+    }
+
+    publications {
+        fatJar(MavenPublication) {
+            from components.shadow
+
+            afterEvaluate {
+                groupId = "io.arenadata"
+                artifactId = "hdfs-kafka-tiered-storage-backend"
+            }
+        }
+    }
+}
+
 dependencies {
     // needed to create full distribution with base Aiven classes
     runtimeOnly "io.aiven:tiered-storage-for-apache-kafka-core:0.0.1-SNAPSHOT"
 }
 
-distributions {
-    main {
-        contents {
-            from(project(":storage-backend").jar)
-            from(project(":storage-backend").configurations.runtimeClasspath)
-            from(project.configurations.runtimeClasspath)
-        }
+shadowJar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    mergeServiceFiles()
+
+    subprojects.each { subproject ->
+        from subproject.tasks.named("shadowJar").map { it.archiveFile.get().asFile }
     }
+
+    dependsOn jar
 }

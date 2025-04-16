@@ -12,10 +12,6 @@
  * limitations under the License.
  */
 
-plugins {
-    id "maven-publish"
-}
-
 dependencies {
     implementation "io.aiven:tiered-storage-for-apache-kafka-storage-core:$aivenTieredStorageVersion"
 
@@ -58,7 +54,7 @@ tasks.register('integrationTest', Test) {
     testClassesDirs = sourceSets.integrationTest.output.classesDirs
     classpath = sourceSets.integrationTest.runtimeClasspath
 
-    shouldRunAfter test, distTar
+    shouldRunAfter test
 
     useJUnitPlatform()
 
@@ -79,15 +75,5 @@ idea {
     module {
         testSourceDirs += sourceSets.integrationTest.java.srcDirs
         testSourceDirs += sourceSets.integrationTest.resources.srcDirs
-    }
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            groupId "io.arenadata"
-            artifactId "hdfs-kafka-tiered-storage-backend"
-            from components.java
-        }
     }
 }

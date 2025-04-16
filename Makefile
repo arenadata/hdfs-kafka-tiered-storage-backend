@@ -11,7 +11,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ##
-VERSION := $(shell grep -o -E '^version=[0-9]+\.[0-9]+\.[0-9]+(-SNAPSHOT)?' gradle.properties | cut -c9-)
+VERSION := $(shell ./gradlew -q --console=plain :version)
 HDFS_VERSION := 3.3.6
 IMAGE_NAME := arenadata/kafka-with-ts-plugin
 IMAGE_VERSION := latest
@@ -28,7 +28,7 @@ checkstyle:
 	./gradlew checkstyleMain checkstyleTest checkstyleIntegrationTest
 
 build:
-	./gradlew build distTar -x test -x integrationTest -x e2e:test -PhadoopVersion=$(HDFS_VERSION)
+	./gradlew build shadowJar -x test -x integrationTest -x e2e:test -PhadoopVersion=$(HDFS_VERSION)
 
 test: build
 	./gradlew test -x e2e:test -PhadoopVersion=$(HDFS_VERSION)
