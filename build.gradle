@@ -44,14 +44,11 @@ gitVersioning.apply {
 
 allprojects {
     repositories {
-        maven {
-            url = uri("https://oss.sonatype.org/service/local/repositories/snapshots/content")
-        }
         mavenCentral()
     }
 
     ext {
-        aivenTieredStorageVersion = "0.0.1-SNAPSHOT"
+        aivenTieredStorageVersion = "1.0.0"
 
         junitVersion = "4.13.2"
 
@@ -183,7 +180,7 @@ publishing {
 
 dependencies {
     // needed to create full distribution with base Aiven classes
-    runtimeOnly "io.aiven:tiered-storage-for-apache-kafka-core:0.0.1-SNAPSHOT"
+    runtimeOnly "io.aiven:tiered-storage-for-apache-kafka-core:$aivenTieredStorageVersion"
 }
 
 shadowJar {
