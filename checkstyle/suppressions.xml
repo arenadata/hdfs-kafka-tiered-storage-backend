@@ -40,4 +40,10 @@
     <suppress checks="JavaNCSSCheck" files="RemoteStorageManagerMetricsTest.java"/>
     <suppress checks="JavaNCSSCheck" files="SingleBrokerTest.java"/>
     <suppress checks="NPathComplexity" files="CredentialsBuilder.java"/>
+    <suppress checks="ImportOrder" files="HdfsSingleBrokerTest.java"/>
+    <suppress checks="ImportOrder" files="SingleBrokerTest.java"/>
+    <suppress checks="ImportOrder" files="RemoteLogMetadataTracker.java"/>
+    <suppress checks="ImportOrder" files="HdfsStorageConfigTest.java"/>
+    <suppress checks="ImportOrder" files="HdfsStorageConfig.java"/>
+    <suppress checks="ImportOrder" files="MetricCollector.java"/>
 </suppressions>

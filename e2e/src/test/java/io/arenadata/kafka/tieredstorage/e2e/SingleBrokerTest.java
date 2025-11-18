@@ -31,6 +31,11 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import io.arenadata.kafka.tieredstorage.e2e.internal.RemoteLogMetadataTracker;
+import io.arenadata.kafka.tieredstorage.e2e.internal.RemoteSegment;
+
+import com.github.dockerjava.api.model.Ulimit;
+import org.apache.commons.io.FileUtils;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.AlterConfigOp;
 import org.apache.kafka.clients.admin.ConfigEntry;
@@ -47,12 +52,6 @@ import org.apache.kafka.common.Uuid;
 import org.apache.kafka.common.config.ConfigResource;
 import org.apache.kafka.common.serialization.ByteArrayDeserializer;
 import org.apache.kafka.common.serialization.ByteArraySerializer;
-
-import io.arenadata.kafka.tieredstorage.e2e.internal.RemoteLogMetadataTracker;
-import io.arenadata.kafka.tieredstorage.e2e.internal.RemoteSegment;
-
-import com.github.dockerjava.api.model.Ulimit;
-import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;

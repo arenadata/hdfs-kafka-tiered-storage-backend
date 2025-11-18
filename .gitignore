@@ -1,6 +1,8 @@
 target
 docs/_build
 .idea
+.vscode/
+.settings/
 *.iml
 *.DS_Store
 .gradle

@@ -21,6 +21,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import com.google.common.collect.Streams;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.StorageStatistics;
 import org.apache.kafka.common.metrics.JmxReporter;
 import org.apache.kafka.common.metrics.KafkaMetricsContext;
 import org.apache.kafka.common.metrics.MetricConfig;
@@ -28,10 +31,6 @@ import org.apache.kafka.common.metrics.Metrics;
 import org.apache.kafka.common.metrics.Sensor;
 import org.apache.kafka.common.metrics.stats.Value;
 import org.apache.kafka.common.utils.Time;
-
-import com.google.common.collect.Streams;
-import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.fs.StorageStatistics;
 
 public class MetricCollector implements AutoCloseable {
     private static final String METRIC_GROUP = "hdfs-client-metrics";
