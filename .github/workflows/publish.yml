@@ -28,3 +28,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Publish to GitHub Packages
       run: ./gradlew publish -P mavenUsername=${{ github.actor }} -P mavenPassword=${{ secrets.GITHUB_TOKEN }} -P mavenUrl=https://maven.pkg.github.com/arenadata/hdfs-kafka-tiered-storage-backend
+      env:
+        GITHUB_USERNAME: ${{ github.actor }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
