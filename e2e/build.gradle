@@ -13,7 +13,7 @@
  */
 
 dependencies {
-    testImplementation "org.apache.kafka:kafka-server-common:$kafkaVersion"
+    testImplementation "io.arenadata.kafka:kafka-server-common:$kafkaVersion"
 
     testImplementation "org.apache.hadoop:hadoop-common:$hadoopVersion"
     testImplementation "org.apache.hadoop:hadoop-hdfs-client:$hadoopVersion"

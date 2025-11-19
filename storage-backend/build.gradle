@@ -13,7 +13,7 @@
  */
 
 dependencies {
-    implementation "io.aiven:tiered-storage-for-apache-kafka-storage-core:$aivenTieredStorageVersion"
+    implementation "io.arenadata.kafka:tiered-storage-for-apache-kafka-storage-core:$aivenTieredStorageVersion"
 
     implementation "commons-io:commons-io:$apacheCommonsIOVersion"
     implementation("org.apache.hadoop:hadoop-common:$hadoopVersion") {
@@ -31,7 +31,7 @@ dependencies {
         exclude group: "com.fasterxml.jackson.core"
         exclude group: "org.slf4j"
     }
-    testImplementation "io.aiven:tiered-storage-for-apache-kafka-storage-core:$aivenTieredStorageVersion:test-fixtures"
+    testImplementation "io.arenadata.kafka:tiered-storage-for-apache-kafka-storage-core:$aivenTieredStorageVersion:test-fixtures"
 }
 
 sourceSets {

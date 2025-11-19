@@ -1,0 +1,30 @@
+name: Publish to to Github packages
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up JDK 21
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+        server-id: github
+        settings-path: ${{ github.workspace }}
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582
+    - name: Build with Gradle
+      run: ./gradlew build -x integrationTest
+      env:
+        GITHUB_USERNAME: ${{ github.actor }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Publish to GitHub Packages
+      run: ./gradlew publish -P mavenUsername=${{ github.actor }} -P mavenPassword=${{ secrets.GITHUB_TOKEN }} -P mavenUrl=https://maven.pkg.github.com/arenadata/hdfs-kafka-tiered-storage-backend
