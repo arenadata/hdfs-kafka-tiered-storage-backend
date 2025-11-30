@@ -14,6 +14,14 @@
 
 dependencies {
     implementation "io.arenadata.kafka:tiered-storage-for-apache-kafka-storage-core:$aivenTieredStorageVersion"
+    runtimeOnly "io.arenadata.kafka:tiered-storage-for-apache-kafka-core:$aivenTieredStorageVersion"
+    runtimeOnly "io.arenadata.kafka:tiered-storage-for-apache-kafka-commons:$aivenTieredStorageVersion"
+    runtimeOnly "io.arenadata.kafka:tiered-storage-for-apache-kafka-storage-azure:$aivenTieredStorageVersion"
+    runtimeOnly "io.arenadata.kafka:tiered-storage-for-apache-kafka-storage-filesystem:$aivenTieredStorageVersion"
+    runtimeOnly "io.arenadata.kafka:tiered-storage-for-apache-kafka-storage-gcs:$aivenTieredStorageVersion"
+    runtimeOnly "io.arenadata.kafka:tiered-storage-for-apache-kafka-storage-s3:$aivenTieredStorageVersion"
+
+    runtimeOnly "org.apache.ozone:ozone-filesystem-hadoop3:$ozoneVersion"
 
     implementation "commons-io:commons-io:$apacheCommonsIOVersion"
     implementation("org.apache.hadoop:hadoop-common:$hadoopVersion") {
@@ -75,5 +83,16 @@ idea {
     module {
         testSourceDirs += sourceSets.integrationTest.java.srcDirs
         testSourceDirs += sourceSets.integrationTest.resources.srcDirs
+    }
+}
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+            afterEvaluate {
+                groupId = "io.arenadata.kafka"
+                artifactId = "hdfs-kafka-tiered-storage-backend"
+            }
+        }
     }
 }
