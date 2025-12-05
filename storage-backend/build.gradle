@@ -14,12 +14,6 @@
 
 dependencies {
     implementation "io.arenadata.kafka:tiered-storage-for-apache-kafka-storage-core:$aivenTieredStorageVersion"
-    runtimeOnly "io.arenadata.kafka:tiered-storage-for-apache-kafka-core:$aivenTieredStorageVersion"
-    runtimeOnly "io.arenadata.kafka:tiered-storage-for-apache-kafka-commons:$aivenTieredStorageVersion"
-    runtimeOnly "io.arenadata.kafka:tiered-storage-for-apache-kafka-storage-azure:$aivenTieredStorageVersion"
-    runtimeOnly "io.arenadata.kafka:tiered-storage-for-apache-kafka-storage-filesystem:$aivenTieredStorageVersion"
-    runtimeOnly "io.arenadata.kafka:tiered-storage-for-apache-kafka-storage-gcs:$aivenTieredStorageVersion"
-    runtimeOnly "io.arenadata.kafka:tiered-storage-for-apache-kafka-storage-s3:$aivenTieredStorageVersion"
 
     runtimeOnly "org.apache.ozone:ozone-filesystem-hadoop3:$ozoneVersion"
 
