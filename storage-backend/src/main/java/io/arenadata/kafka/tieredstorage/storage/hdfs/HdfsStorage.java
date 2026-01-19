@@ -57,9 +57,9 @@ public class HdfsStorage implements StorageBackend {
             final Configuration hadoopConf = config.hadoopConf();
             config.hdfsAuthenticator().authenticate();
 
-            fileSystem = FileSystem.get(hadoopConf);
-
             final Path rootDirectory = new Path(config.rootDirectory());
+            fileSystem = FileSystem.get(rootDirectory.toUri(), hadoopConf);
+
             validateRootDir(rootDirectory);
             fileSystem.setWorkingDirectory(rootDirectory);
 
