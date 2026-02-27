@@ -16,6 +16,7 @@ plugins {
     id 'java-library'
     id 'maven-publish'
     id 'com.diffplug.spotless' version '6.25.0'
+    id 'com.gradleup.shadow' version '8.3.5'
     id 'io.github.rmanibus.maven-settings' version '0.8'
     id 'me.qoomon.git-versioning' version '6.4.4'
 }
@@ -105,6 +106,8 @@ subprojects {
 
     apply plugin: "com.diffplug.spotless"
 
+    apply plugin: "com.gradleup.shadow"
+
     dependencies {
         compileOnly "io.arenadata.kafka:kafka-clients:$kafkaVersion"
         compileOnly "io.arenadata.kafka:kafka-storage-api:$kafkaVersion"
@@ -146,10 +149,10 @@ subprojects {
         options.addStringOption('Xdoclint:all,-missing', '-quiet')
     }
 
-    tasks.create(name: "copyDependantLibs", type: Copy) {
-        from (configurations.runtimeClasspath) {}
-        into "$buildDir/dependant-libs"
-        duplicatesStrategy 'exclude'
+    shadowJar {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        mergeServiceFiles()
+        setProperty("zip64", true)
     }
 
     spotless {
@@ -178,5 +181,27 @@ publishing {
             }
         }
     }
+
+    publications {
+        fatJar(MavenPublication) {
+            from components.shadow
+
+            afterEvaluate {
+                groupId = "io.arenadata.kafka"
+                artifactId = "hdfs-kafka-tiered-storage-backend"
+            }
+        }
+    }
 }
 
+shadowJar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    mergeServiceFiles()
+    setProperty("zip64", true)
+
+    subprojects.each { subproject ->
+        from subproject.tasks.named("shadowJar").map { it.archiveFile.get().asFile }
+    }
+
+    dependsOn jar
+}

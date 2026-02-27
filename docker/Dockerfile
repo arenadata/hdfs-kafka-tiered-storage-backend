@@ -22,8 +22,7 @@ ARG _VERSION
 USER root
 
 RUN mkdir -p /tiered-storage-for-apache-kafka/
-COPY storage-backend/build/libs/storage-backend-${_VERSION}.jar /tiered-storage-for-apache-kafka/
-COPY storage-backend/build/dependant-libs/*.jar /tiered-storage-for-apache-kafka/
+COPY build/libs/hdfs-kafka-tiered-storage-backend-${_VERSION}-all.jar /tiered-storage-for-apache-kafka/
 
 # Installing JMX exporter agent
 ARG JMX_EXPORTER_VERSION=0.18.0

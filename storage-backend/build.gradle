@@ -80,14 +80,3 @@ idea {
         testSourceDirs += sourceSets.integrationTest.resources.srcDirs
     }
 }
-publishing {
-    publications {
-        maven(MavenPublication) {
-            from components.java
-            afterEvaluate {
-                groupId = "io.arenadata.kafka"
-                artifactId = "hdfs-kafka-tiered-storage-backend"
-            }
-        }
-    }
-}
