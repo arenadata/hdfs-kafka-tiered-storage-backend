@@ -152,6 +152,15 @@ subprojects {
     shadowJar {
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
         mergeServiceFiles()
+        exclude '**/*.txt'
+        exclude '**/*.md'
+        exclude 'META-INF/maven/**'
+        exclude 'META-INF/licenses/**'
+        exclude 'META-INF/NOTICE*'
+        exclude 'META-INF/LICENSE*'
+        exclude '**/*-sources.jar'
+        exclude '**/*-javadoc.jar'
+        exclude 'META-INF/services/java.net.spi.InetAddressResolverProvider'
         setProperty("zip64", true)
     }
 
