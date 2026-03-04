@@ -14,7 +14,9 @@
 
 dependencies {
     implementation "io.arenadata.kafka:tiered-storage-for-apache-kafka-storage-core:$aivenTieredStorageVersion"
-    runtimeOnly "io.arenadata.kafka:tiered-storage-for-apache-kafka-core:$aivenTieredStorageVersion"
+    runtimeOnly("io.arenadata.kafka:tiered-storage-for-apache-kafka-core:$aivenTieredStorageVersion") {
+        exclude group: "org.slf4j"
+    }
 
     runtimeOnly "org.apache.ozone:ozone-filesystem-hadoop3:$ozoneVersion"
 

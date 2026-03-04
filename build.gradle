@@ -150,7 +150,6 @@ subprojects {
     }
 
     shadowJar {
-        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
         mergeServiceFiles()
         exclude '**/*.txt'
         exclude '**/*.md'
@@ -204,7 +203,6 @@ publishing {
 }
 
 shadowJar {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     mergeServiceFiles()
     setProperty("zip64", true)
 
