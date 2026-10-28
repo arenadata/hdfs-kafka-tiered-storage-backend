@@ -19,8 +19,9 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Map;
 
-import org.apache.hadoop.conf.Configuration;
 import org.apache.kafka.common.config.ConfigException;
+
+import org.apache.hadoop.conf.Configuration;
 import org.junit.jupiter.api.Test;
 
 import static io.arenadata.kafka.tieredstorage.storage.hdfs.HdfsStorageConfig.HDFS_AUTH_ENABLED_CONFIG;
